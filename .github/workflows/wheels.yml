@@ -23,7 +23,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.17.0
         env:
-          CIBW_SKIP: cp36-* cp37-* cp38-*
+          CIBW_SKIP: cp36-* cp37-* cp38-* pp*
           CIBW_ARCHS_MACOS: x86_64 arm64
 
       # --- CHANGED: Updated to v4 and gave each OS a unique artifact name ---
