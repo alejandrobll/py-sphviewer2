@@ -23,30 +23,31 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.16.2
         env:
-          # Optional: Skip older Python versions to save time
           CIBW_SKIP: cp36-* cp37-* cp38-*
-          # Ensure we build for Apple Silicon on Mac
           CIBW_ARCHS_MACOS: x86_64 arm64
 
-      - uses: actions/upload-artifact@v3
+      # --- CHANGED: Updated to v4 and gave each OS a unique artifact name ---
+      - uses: actions/upload-artifact@v4
         with:
+          name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
 
   upload_pypi:
     needs: [build_wheels]
     runs-on: ubuntu-latest
-    # Only upload if a tag was pushed
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
     
     permissions:
       id-token: write 
       contents: read
-
+      
     steps:
-      - uses: actions/download-artifact@v3
+      # --- CHANGED: Updated to v4 and merged all OS folders into 'dist' ---
+      - uses: actions/download-artifact@v4
         with:
-          name: artifact
+          pattern: cibw-wheels-*
           path: dist
+          merge-multiple: true
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
