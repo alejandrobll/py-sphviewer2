@@ -36,6 +36,7 @@ $$W(r, h) = \frac{2.5}{\pi h^2} \left(1 - \left(\frac{r}{h}\right)^2\right)^{1.5
 This implementation is based on the algorithm described in:
 > *A. Benítez-Llambay (2025), "Efficient Computation of Smoothed Particle Hydrodynamic Properties on Regular Grids" (https://iopscience.iop.org/article/10.3847/2515-5172/addab2)* 
 
+Please cite this reference if you use the code.
 ---
 
 ## Installation
