@@ -62,7 +62,7 @@ $$\approx T \times (2^{r_{max}} \times 2^{r_{max}}) \times 8 \text{ bytes}$$
 For example, rendering at $`r_max=11` with `num_threads=16` requires approximately 512 MB of temporary buffer space. Note that this memory is automatically freed once the collapse phase is complete.
 
 ---
-## 💻 Minimal Example
+## Minimal Example
 
 ```python
 import sphviewer2
