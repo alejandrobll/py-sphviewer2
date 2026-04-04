@@ -97,7 +97,7 @@ class Camera:
     how closely it zooms, and the quality/resolution of the underlying grids.
     """
     def __init__(self, Lbox, extent=None, xc=None, yc=None, zc=None,
-                 azimuth=0, elevation=0, roll=0,
+                 azimuth=0.0, elevation=0.0, roll=0.0,
                  periodic=True, target_cells_per_h=4, r_max=9, r_min=None):
         """
         Initialize the Camera object.
@@ -138,13 +138,17 @@ class Camera:
         self.zc = zc if zc is not None else Lbox / 2.0        
         self.periodic = periodic
         
+        self.azimuth = azimuth 
+        self.elevation = elevation
+        self.roll = roll
+
         self.target_cells_per_h = target_cells_per_h
         self.r_max = r_max
         self.r_min = r_min if r_min is not None else int(math.log2(target_cells_per_h)) + 1
     
         # Generate the rotation matrix from Euler angles (degrees)
         rot = R.from_euler('XYZ', [elevation, azimuth, roll], degrees=True)
-        self.rot_matrix = rot.as_matrix().flatten().astype(np.float64)
+        self.rot_matrix = np.ascontiguousarray(rot.as_matrix().flatten(), dtype=np.float64)
 
     def get_extent(self):
         """
@@ -288,9 +292,14 @@ class Projector:
                          r_max=m['r_max'], r_min=m['r_min'])
             proj = cls(cam)
             
+            proj._memory_refs = []
             # Inject data back into C++
             for r in range(m['r_min'], m['r_max'] + 1):
-                proj._grids.set_level_data(r, f[f"grids/level_{r}"][()])
+                # --- FIX: Read the data and force C-contiguous float64 layout ---
+                raw_data = f[f"grids/level_{r}"][()]
+                level_data = np.ascontiguousarray(raw_data, dtype=np.float64)
+                
+                proj._grids.set_level_data(r, level_data)
                 
             return proj
 
