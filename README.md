@@ -14,7 +14,7 @@ Traditional SPH visualization tools typically use a "scatter" approach, where ev
 * **Mass Conservation:** Guaranteed mass recovery via normalized kernels and bilinear grid collapsing.
 * **Multithreaded Backend:** Native C++ implementation using thread-local grids for lock-free parallel projection. No more issues with OpenMP on Mac.
 * **Advanced Optics:** Built-in support for periodic boundary conditions, zooming, and off-center cropping.
-* **On-the-fly 3D Rotations:** Perform instantaneous hardware-accelerated 3D camera rotations with zero memory duplication.
+* **On-the-fly 3D Rotations:** Perform instantaneous 3D camera rotations with zero memory duplication using natively compiled C++ matrix transformations.
 * **Fast Smoothing Lengths:** Includes a multi-threaded exact k-nearest neighbor search to compute smoothing lengths directly from raw coordinates. No more external packages needed!
 * **Deferred Rendering:** Compress and save the projected multi-scale grid hierarchy to tiny HDF5 files for instant, CPU-free exploration later.
 
@@ -40,7 +40,15 @@ This implementation is based on the algorithm described in:
 
 ## Installation
 
-Currently, the library is installed from the source. Ensure you have a C++14 compatible compiler (like `clang++` or `g++`).
+The easiest way to install **py-sphviewer2** is via `pip`. We provide pre-compiled binaries (wheels) for **Linux, Windows, and macOS** (both Intel and Apple Silicon). This means you do not need a C++ compiler to install the library!
+
+```bash
+pip install py-sphviewer2
+```
+
+## Building From Source
+
+If you want to modify the code or compile it yourself, ensure you have a C++14 compatible compiler (like `clang++` or `g++`).
 
 ```bash
 git clone https://github.com/yourusername/py-sphviewer2.git
