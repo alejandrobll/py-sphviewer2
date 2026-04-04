@@ -22,7 +22,7 @@ ext_modules = [
 
 setup(
     name='py-sphviewer2',              
-    version='2.0.1',
+    version='2.0.2',
     description='Efficient SPH projection using the Benitez-Llambay (2025) algorithm',
     ext_modules=ext_modules,
     packages=['sphviewer2'],           # The package name (no hyphen)
