@@ -79,7 +79,7 @@ plt.imshow(image, cmap='magma', origin='lower')
 plt.show()
 ```
 
-where r_max controls the output image resolution, which is a power of 2 (2^r_max x 2^r_max pixels).
+where r_max controls the output image resolution, which is a power of 2 (2^r_max x 2^r_max pixels). Looking for more? Check out the Jupyter Notebook files in the `docs` folder.
 
 ---
 
