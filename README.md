@@ -27,16 +27,11 @@ The core of the library is the **Nested Grid** approach. Instead of projecting a
 2.  **Parallel Projection:** Each particle is projected onto its "native" grid. Large particles go to coarse grids; small particles go to fine grids. Over the years, we have learned that the parallel projection is the most used projection by the community. We have dropped perspective projection for this release.
 3.  **Bilinear Collapse:** All grids are interpolated and summed upward into the highest resolution level. Because each level has exactly $2^R$ cells, this "collapse" naturally preserves mass.
 
-### Mathematical Kernel
-For simplicity, we employ the dome-shaped kernel:
-$$W(r, h) = \frac{2.5}{\pi h^2} \left(1 - \left(\frac{r}{h}\right)^2\right)^{1.5} \quad \text{for } r < h$$
-
 ---
 ## Reference
 This implementation is based on the algorithm described in:
-> *A. Benítez-Llambay (2025), "Efficient Computation of Smoothed Particle Hydrodynamic Properties on Regular Grids" (https://iopscience.iop.org/article/10.3847/2515-5172/addab2)* 
+> *A. Benítez-Llambay (2025), "Efficient Computation of Smoothed Particle Hydrodynamic Properties on Regular Grids" (https://iopscience.iop.org/article/10.3847/2515-5172/addab2)*. **Please cite this reference if you use the code.**
 
-Please cite this reference if you use the code.
 ---
 
 ## Installation
@@ -120,10 +115,10 @@ When working with massive simulations, calculating $h$ and projecting the partic
 ```python
 # 1. Project and Bake (on an HPC node)
 proj.project(particles, num_threads=16)
-proj.save_baked_grids("my_simulation_baked.h5")
+proj.save_baked_grids("my_simulation_baked.hdf5")
 
 # 2. Instantly Load and Explore (on your laptop)
-proj_loaded = sphviewer2.Projector.load_baked_grids("my_simulation_baked.h5")
+proj_loaded = sphviewer2.Projector.load_baked_grids("my_simulation_baked.hdf5")
 
 # Extract individual resolution levels or collapse the final image instantly
 diffuse_gas = proj_loaded.get_level(6)
