@@ -71,9 +71,20 @@ For example, rendering at $`r_max=11` with `num_threads=16` requires approximate
 ```python
 import sphviewer2
 import matplotlib.pyplot as plt
+import numpy as np
+
+n_particles = 10000
+Lbox = 1.0
+x = np.random.rand(n_particles) * Lbox
+y = np.random.rand(n_particles) * Lbox
+z = np.random.rand(n_particles) * Lbox
+h = np.ones(n_particles) * 0.1 * Lbox
+m = np.ones(n_particles)
+
+log2res = 10 # 2^10 = 1024 pixels
 
 # x, y, h, m are your NumPy arrays
-image = sphviewer2.render(x, y, z, h, m, Lbox=1.0, r_max=10)
+image, extent = sphviewer2.render(x, y, z, h, m, Lbox=Lbox, r_max=log2res)
 
 plt.imshow(image, cmap='magma', origin='lower')
 plt.show()
