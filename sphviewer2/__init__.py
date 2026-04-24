@@ -336,7 +336,7 @@ class Projector:
         return self._grids.get_level_data(level)   
          
 
-def render(x, y, z, h, m, Lbox=1.0, extent=None, 
+def render(x, y, z, h, m, Lbox, extent=None, 
            xc=None, yc=None, zc=None,
            azimuth=0, elevation=0, roll=0,
            periodic=True, r_max=9, target_cells_per_h=4, num_threads=4):
@@ -357,8 +357,8 @@ def render(x, y, z, h, m, Lbox=1.0, extent=None,
         1D array of particle smoothing lengths.
     m : array_like
         1D array of particle masses or weights.
-    Lbox : float, optional
-        The size of the periodic simulation box. Default is 1.0.
+    Lbox : float
+        The size of the simulation box.
     extent : float, optional
         The physical width/height of the camera's field of view. 
         If None, defaults to the full `Lbox`.
@@ -399,7 +399,7 @@ def render(x, y, z, h, m, Lbox=1.0, extent=None,
 
     return image, c.get_extent()
 
-def estimate_h(x, y, z=None, Lbox=1.0, k=32, num_threads=4):
+def estimate_h(x, y, z, Lbox, k=32, num_threads=4):
     """
     Estimates the exact SPH smoothing length (h) for each particle.
 
@@ -409,12 +409,9 @@ def estimate_h(x, y, z=None, Lbox=1.0, k=32, num_threads=4):
 
     Parameters
     ----------
-    x, y : array_like
+    x, y, z : array_like
         1D arrays of particle X and Y coordinates.
-    z : array_like, optional
-        1D array of particle Z coordinates. If None, the search assumes a 
-        purely 2D plane (z=0 for all particles).
-    Lbox : float, optional
+    Lbox : float
         The size of the simulation box. Required to correctly compute neighbor 
         distances across periodic boundaries. Default is 1.0.
     k : int, optional
@@ -432,10 +429,6 @@ def estimate_h(x, y, z=None, Lbox=1.0, k=32, num_threads=4):
     """
     x = np.ascontiguousarray(x, dtype=np.float64)
     y = np.ascontiguousarray(y, dtype=np.float64)
-    
-    if z is None:
-        z = np.zeros_like(x)
-    else:
-        z = np.ascontiguousarray(z, dtype=np.float64)
-        
+    z = np.ascontiguousarray(z, dtype=np.float64)
+            
     return core.estimate_smoothing_length(x, y, z, Lbox, k, num_threads)

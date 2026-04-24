@@ -125,6 +125,11 @@ public:
                 double h = ptr_h[i];
                 if (h <= 0.0) continue; 
 
+                // We do not allow h to be larger than half of the box
+                if (h > Lbox / 2.0){
+                    h = Lbox / 2.0;
+                }
+
                 // Distance from camera center
                 double dx = ptr_x[i] - cam_xc;
                 double dy = ptr_y[i] - cam_yc;
@@ -179,7 +184,7 @@ public:
                         double w = evaluate_kernel(R2, hinv2);
                         
                         if (w > 0.0) {
-                            // 5. Open Boundaries: Just check if inside the image!
+                            // Open Boundaries: Just check if inside the image!
                             if (cx >= 0 && cx < N_cells && cy >= 0 && cy < N_cells) {
                                 grid.data[cy * N_cells + cx] += ptr_m[i] * w;
                             }
